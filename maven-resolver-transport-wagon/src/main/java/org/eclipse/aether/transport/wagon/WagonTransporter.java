@@ -594,11 +594,8 @@ final class WagonTransporter
             File file = task.getDataFile();
             if ( file == null && wagon instanceof StreamingWagon )
             {
-                try ( InputStream src = task.newInputStream() )
-                {
-                    // StreamingWagon uses an internal buffer on src input stream.
-                    ( (StreamingWagon) wagon ).putFromStream( src, dst, task.getDataLength(), -1 );
-                }
+                // StreamingWagon uses an internal buffer on src input stream.
+                ( (StreamingWagon) wagon ).putFromStream(() -> task.newInputStream(), src, dst, task.getDataLength(), -1 );
             }
             else
             {
